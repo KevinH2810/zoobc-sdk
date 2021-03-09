@@ -7,6 +7,7 @@ import { Address } from '../interfaces';
 import { addEscrowBytes } from './escrow-transaction';
 import { EscrowTransactionInterface } from './send-money';
 import { TransactionType } from '../../../grpc/model/transaction_pb';
+import { AccountType } from '../../../grpc/model/accountType_pb';
 import { writeInt64, writeInt32, ZBCAddressToBytes, addressToBytes, readInt64, generateTransactionHash } from '../utils';
 
 const TRANSACTION_TYPE = writeInt32(TransactionType.LIQUIDPAYMENTTRANSACTION);
@@ -64,7 +65,7 @@ export function liquidStopTransactionBuilder(data: LiquidStopTransactionInterfac
 
   const timestamp = writeInt64(Math.trunc(Date.now() / 1000));
   const sender = addressToBytes(data.accountAddress);
-  console.log("sender = ", data.accountAddress)
+  console.log('sender = ', data.accountAddress);
   const recipient = writeInt32(AccountType.EMPTYACCOUNTTYPE);
   const fee = writeInt64(data.fee * 1e8);
   const TransactionId = writeInt64(data.transactionId);
@@ -98,7 +99,7 @@ export function addLiquidBytes(bytes: Buffer, data: any): Buffer {
 
 export function readLiquidBytes(txBytes: Buffer, offset: number): any {
   const amount = parseInt(readInt64(txBytes, offset));
-  offset+=8
+  offset += 8;
   const completeminutes = parseInt(readInt64(txBytes, offset));
   return { amount, completeminutes };
 }
